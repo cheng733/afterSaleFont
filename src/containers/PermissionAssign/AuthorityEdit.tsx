@@ -1,7 +1,7 @@
 import React from 'react'
 import { Modal, Tree } from 'antd'
 
-import { routers } from '../../router'
+import { routers } from '../../components/LeftBar/LeftBar'
 
 
 const AuthorityEdit:React.FC<any> = (props)=>{
