@@ -15,12 +15,15 @@ import "./App.scss";
 
 
 const { Header, Content } = Layout;
-const handleLogOut = ()=>{
+
+const handleSelect = async({ key }:any)=>{
+if(key==="3"){
   localStorage.removeItem("token")
-  PubSub.publish("token","")
+  await PubSub.publish("token","")
+}
 }
 const menu = (
-  <Menu>
+  <Menu onClick={handleSelect}>
     <Menu.Item key="0">
       <a href="http://www.alipay.com/">个人信息</a>
     </Menu.Item>
@@ -28,7 +31,7 @@ const menu = (
       <a href="http://www.taobao.com/">车辆信息</a>
     </Menu.Item>
     <Menu.Divider />
-    <Menu.Item key="3" onClick={()=>{handleLogOut}}>退出</Menu.Item>
+    <Menu.Item key="3">退出</Menu.Item>
   </Menu>
 );
 
@@ -61,8 +64,8 @@ const App: React.FC = () => {
                 }
               )}
               <div style={{ position: "absolute", right: "40px", top: "1px" }}>
-                <Dropdown overlay={menu} trigger={["click"]}>
-                  <Badge count={1}>
+                <Dropdown overlay={menu} trigger={["click"]}  >
+                  <Badge count={1} >
                     <Avatar
                       shape="square"
                       size="large"
