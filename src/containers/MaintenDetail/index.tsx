@@ -17,6 +17,7 @@ const MaintenDetail: React.FC = () => {
   const approveCancel = async(_record:any)=> {
   await Http.reqDelMaintenDetail("/delMaintenDetail",{id:_record["id"]})
   await Http.reqEditStatusMaintenAppoint("/editStatusMaintenAppoint",{id:_record["repairNum"],status:"维修委托"})
+  refreshTable()
   message.error('不通过，请重新填写维修信息');
   }
   const columns: any = [
@@ -84,7 +85,7 @@ const MaintenDetail: React.FC = () => {
    },[])
    const refreshTable = (ifFirst?:boolean)=>{
 
-    Http.reqGetCustomer("/getMaintenDetail",{name:"",offset:0,size:10}).then((response:any)=>{
+    Http.reqGetCustomer("/getMaintenDetail",{repairMan:"",offset:0,size:10}).then((response:any)=>{
       const  result  = response?.data?.result ||[]
       setData(result)
   

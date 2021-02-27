@@ -38,8 +38,8 @@ const ReturnInfo: React.FC = () => {
       title: "问题描述",
       dataIndex: "problemDesc",
       render:(text:any,_record: any,_index: any)=>{
-        return  text?(<Input value={text} onChange={(event)=>editInputHandle(event,_record)}/>):
-        <Input onChange={(event)=>editInputHandle(event,_record)}/>
+        return  text?(<span>{ text }</span>):
+        <Input onPressEnter={(event)=>editInputHandle(event,_record)} allowClear/>
       }
     },
   ];
@@ -62,7 +62,7 @@ const ReturnInfo: React.FC = () => {
    },[])
    const refreshTable = (ifFirst?:boolean)=>{
 
-    Http.reqGetCustomer("/getMaintenDetail",{name:"",offset:0,size:10}).then((response:any)=>{
+    Http.reqGetCustomer("/getMaintenDetail",{repairMan:"",offset:0,size:10}).then((response:any)=>{
       const  result  = response?.data?.result ||[]
       setData(result)
   
