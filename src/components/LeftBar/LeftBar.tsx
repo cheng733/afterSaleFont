@@ -32,17 +32,19 @@ let routersDisplay:any[]
 const LeftBar: React.FC<any> = (props: boolean) => {
   const { collapsed } = (props as any) || {};
   const defaultKey = location.hash.slice(2);
-  console.log('routers',routers);
-  const username = localStorage.getItem("username")
-  Http.reqAuthorityInfo("/getUserInfo",{username,offset:0,size:10}).then((response:any)=>{
-    const  result  = response?.data?.result ||[]
-    let { authorityInfo } = result[0] ||{}
-    console.log('authorityInfo',authorityInfo);
-    authorityInfo = String(authorityInfo).split(",") ||[]
-    routersDisplay = routers.filter(item=> authorityInfo?.includes(item?.path))
-    console.log('routers',routersDisplay);
-   })
-  return routersDisplay?(
+  let [authRouters,setAuthRouters] = React.useState([]) as any
+  React.useEffect(()=>{
+    const username = localStorage.getItem("username")
+    Http.reqAuthorityInfo("/getUserInfo",{username,offset:0,size:10}).then((response:any)=>{
+      const  result  = response?.data?.result ||[]
+      let { authorityInfo } = result[0] ||{}
+      authorityInfo = String(authorityInfo).split(",") ||[]
+      routersDisplay = routers.filter(item=> authorityInfo?.includes(item?.path))
+      setAuthRouters(routersDisplay)
+     })
+  },[])
+ 
+  return authRouters?(
     <Sider
       trigger={null}
       collapsible
@@ -51,7 +53,7 @@ const LeftBar: React.FC<any> = (props: boolean) => {
     >
       <div className="logo" />
       <Menu theme="dark" mode="inline" defaultSelectedKeys={[defaultKey||"home"]}>
-        {routersDisplay?.map(item=>{
+        {authRouters?.map((item:any)=>{
           let path = `/${item?.path}`
           return(
  <Menu.Item key={item?.path} icon={item?.icon}>
