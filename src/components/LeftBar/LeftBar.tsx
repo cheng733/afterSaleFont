@@ -13,6 +13,8 @@ import {
   IdcardOutlined,
   FileTextOutlined,
 } from "@ant-design/icons";
+import PubSub from "pubsub-js";
+
 
 import Containers from "../../containers";
 import Http from '../../http'
@@ -37,9 +39,10 @@ const LeftBar: React.FC<any> = (props: boolean) => {
     const username = localStorage.getItem("username")
     Http.reqAuthorityInfo("/getUserInfo",{username,offset:0,size:10}).then((response:any)=>{
       const  result  = response?.data?.result ||[]
-      let { authorityInfo } = result[0] ||{}
+      let  authorityInfo:any  = result[0]?.authorityInfo
       authorityInfo = String(authorityInfo).split(",") ||[]
       routersDisplay = routers.filter(item=> authorityInfo?.includes(item?.path))
+      PubSub.publish("routers",routersDisplay)
       setAuthRouters(routersDisplay)
      })
   },[])
