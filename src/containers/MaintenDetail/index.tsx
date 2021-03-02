@@ -1,26 +1,57 @@
 import React from "react";
 import { Table, Space, Input, Button,Popconfirm,message } from "antd";
-import Http from '../../http'
 
+import Http from '../../http'
+import ServiceFee from './ServiceFee'
 
 const MaintenDetail: React.FC = () => {
   let [data, setData] = React.useState([]);
   const [searchContent,setSearchContent] = React.useState("")
+  let [isModalVisible,setIsModalVisible ] = React.useState(false); 
+  const [form,setForm] = React.useState(null) as any
 
+  const handleCancel = () => {
+    setIsModalVisible(false)
+
+  };
+  const refreshTable = async(ifFirst?:boolean)=>{
+    try{
+      await Http.reqGetCustomer("/getMaintenDetail",{repairMan:"",offset:0,size:10}).then((response:any)=>{
+        const  result  = response?.data?.result ||[]
+        setData(result)
+       }) 
+    }catch(err){
+      setData([])
+    }
+    
+    if(ifFirst){
+    
+    }
+    }
   const  approveConfirm = async(_record:any)=> {
     await Http.reqEditStatusMaintenAppoint("/editStatusMaintenAppoint",{id:_record["repairNum"],status:"服务结算"})
     await Http.reqEditStatusMaintenDetail("/editStatusMaintenDetail",{id:_record["id"],status:"服务结算"})
-    refreshTable()
+    await refreshTable()
     message.success('审核成功');
   }
   
   const approveCancel = async(_record:any)=> {
   await Http.reqDelMaintenDetail("/delMaintenDetail",{id:_record["id"]})
   await Http.reqEditStatusMaintenAppoint("/editStatusMaintenAppoint",{id:_record["repairNum"],status:"维修委托"})
-  refreshTable()
+  await refreshTable()
   message.error('不通过，请重新填写维修信息');
   }
+  const handleServiceFee = (record:any)=>{
+    setIsModalVisible(true)
+    form&&form?.setFieldsValue({
+      repairNum:record["repairNum"]
+    })
+    
+  }
   const columns: any = [
+    {title:"序号",render:(_text: any,_record: any,index: number)=>{
+      return ++index
+    }},
     {
       title: "维修编号",
       dataIndex:"repairNum"
@@ -61,7 +92,7 @@ const MaintenDetail: React.FC = () => {
          <Button type="primary">审核</Button>
          </Popconfirm>
        </Space>
-        ):<></>
+        ):(status=="服务结算"?(<Button type="primary" onClick={()=>handleServiceFee(_record)}>服务费用</Button>):<></>)
       }
     },
   ];
@@ -83,17 +114,13 @@ const MaintenDetail: React.FC = () => {
      setData(result)
     })
    },[])
-   const refreshTable = (ifFirst?:boolean)=>{
-
-    Http.reqGetCustomer("/getMaintenDetail",{repairMan:"",offset:0,size:10}).then((response:any)=>{
-      const  result  = response?.data?.result ||[]
-      setData(result)
-  
-     }) 
-    if(ifFirst){
-    
-    }
-    }
+  const onCreate = (values:any)=>{
+    console.log('values',values);
+    setIsModalVisible(false)  
+  }
+  const getForm = (form:any)=>{
+    setForm(form)
+  }
   return (
     <>
       <div>
@@ -108,6 +135,7 @@ const MaintenDetail: React.FC = () => {
       </div>
       <div style={{ margin: "40px 0  10px 0 " }}></div>
       <Table columns={columns} dataSource={data} rowKey="id" />
+      <ServiceFee onCreate={onCreate} isModalVisible={isModalVisible} handleCancel={handleCancel} getForm={getForm}/>
     </>
   );
 };
