@@ -3,17 +3,23 @@ import { Table, Space, Input, Button,Popconfirm,message } from "antd";
 
 import Http from '../../http'
 import ServiceFee from './ServiceFee'
+import ServiceAudit from './ServiceAudit'
 
 const MaintenDetail: React.FC = () => {
   let [data, setData] = React.useState([]);
   const [searchContent,setSearchContent] = React.useState("")
   let [isModalVisible,setIsModalVisible ] = React.useState(false); 
   const [form,setForm] = React.useState(null) as any
+  const [auditform,setAuditForm] = React.useState(null) as any
+  let [isAuditModalVisible,setIsAuditModalVisible ] = React.useState(false); 
 
   const handleCancel = () => {
     setIsModalVisible(false)
 
   };
+  const handleAuditCancel = ()=>{
+    setIsAuditModalVisible(false)
+  }
   const refreshTable = async(ifFirst?:boolean)=>{
     try{
       await Http.reqGetCustomer("/getMaintenDetail",{repairMan:"",offset:0,size:10}).then((response:any)=>{
@@ -47,6 +53,12 @@ const MaintenDetail: React.FC = () => {
       repairNum:record["repairNum"]
     })
     
+  }
+  const handleServiceAudit = (record:any)=>{
+    setIsAuditModalVisible(true)
+    auditform&&auditform?.setFieldsValue({
+      repairNum:record["repairNum"]
+    })
   }
   const columns: any = [
     {title:"序号",render:(_text: any,_record: any,index: number)=>{
@@ -92,7 +104,10 @@ const MaintenDetail: React.FC = () => {
          <Button type="primary">审核</Button>
          </Popconfirm>
        </Space>
-        ):(status=="服务结算"?(<Button type="primary" onClick={()=>handleServiceFee(_record)}>服务费用</Button>):<></>)
+        ):(status=="服务结算"?(
+        <Button type="primary" onClick={()=>handleServiceFee(_record)}>服务费用</Button>):(
+        status=="服务稽查"?(<Button type="primary" onClick={()=>handleServiceAudit(_record)}>服务稽查</Button>):<></>
+        ))
       }
     },
   ];
@@ -118,8 +133,15 @@ const MaintenDetail: React.FC = () => {
     console.log('values',values);
     setIsModalVisible(false)  
   }
+  const onAuditCreate = (values:any)=>{
+    console.log('values',values);
+    setIsAuditModalVisible(false)
+  }
   const getForm = (form:any)=>{
     setForm(form)
+  }
+  const getAuditForm = (form:any)=>{
+    setAuditForm(form)
   }
   return (
     <>
@@ -136,6 +158,7 @@ const MaintenDetail: React.FC = () => {
       <div style={{ margin: "40px 0  10px 0 " }}></div>
       <Table columns={columns} dataSource={data} rowKey="id" />
       <ServiceFee onCreate={onCreate} isModalVisible={isModalVisible} handleCancel={handleCancel} getForm={getForm}/>
+      <ServiceAudit onAuditCreate={onAuditCreate} isAuditModalVisible={isAuditModalVisible} handleAuditCancel={handleAuditCancel} getAuditForm={getAuditForm}/>
     </>
   );
 };
