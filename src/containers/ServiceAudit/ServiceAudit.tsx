@@ -20,26 +20,26 @@ const formItemLayout = {
   },
 };
 
-const ServiceAudit: React.FC<any> = (props) => {
+const ServiceAuditDatail: React.FC<any> = (props) => {
   const [form] = Form.useForm();
-  const { onAuditCreate,isAuditModalVisible,handleAuditCancel,getAuditForm } = props
+  const { onCreate,isModalVisible,handleCancel,getForm } = props
   const handleOk = () => {
     form
     .validateFields()
     .then(values => {
       form.resetFields();
-      onAuditCreate(values);
+      onCreate(values);
     })
     .catch(info => {
       console.log('Validate Failed:', info);
     });
 }
 React.useEffect(()=>{
-  getAuditForm(form)
+  getForm(form)
 },[])
 
   return (
-    <Modal title="服务稽查" visible={isAuditModalVisible} onOk={handleOk} onCancel={handleAuditCancel} width="700px">
+    <Modal title="服务稽查" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} width="700px">
     <Form
       {...formItemLayout}
       form={form}
@@ -71,7 +71,7 @@ React.useEffect(()=>{
               },
             ]}
           >
-            <Input/>
+            <Input disabled/>
           </Form.Item>
         </Col>
         <Col>
@@ -85,7 +85,7 @@ React.useEffect(()=>{
               },
             ]}
           >
-            <Input/>
+            <Input disabled/>
           </Form.Item>
         </Col>
       </Row>
@@ -113,7 +113,7 @@ React.useEffect(()=>{
               },
             ]}
           >
-            <Input/>
+            <Input disabled/>
           </Form.Item>
         </Col>
       </Row>
@@ -128,7 +128,7 @@ React.useEffect(()=>{
               },
             ]}
           >
-            <Input/>
+            <Input disabled/>
           </Form.Item>
       </Row>
       <Row>
@@ -141,7 +141,7 @@ React.useEffect(()=>{
           },
         ]}
       >
-      <Checkbox.Group style={{ width: '100%' }}>
+      <Checkbox.Group style={{ width: '100%' }} disabled>
     <Row>
       <Col span={8}>
         <Checkbox value="满意">满意</Checkbox>
@@ -167,4 +167,4 @@ React.useEffect(()=>{
   );
 };
 
-export default ServiceAudit;
+export default ServiceAuditDatail;

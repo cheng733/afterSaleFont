@@ -1,16 +1,24 @@
 import React from "react";
-import { Table, Button, Input } from "antd";
+import { Table, Button } from "antd";
 
 import Http from '../../http'
 import Fee from './Fee'
 
 const ServiceFee: React.FC = () => {
   const [data,setData] = React.useState([])
-  const [searchContent,setSearchContent] = React.useState("")
   let [isModalVisible,setIsModalVisible ] = React.useState(false); 
   const [form,setForm] = React.useState(null) as any
 const handleDetail = (record:any)=>{
-  console.log('record',record,'form',form);
+  form&&form?.setFieldsValue({
+    repairNum:record["repairNum"],
+    serviceMethod:record["serviceMethod"],
+    hours:record["hours"],
+    price:record["price"],
+    manageFee:record["manageFee"],
+    otherFee:record["otherFee"],
+    feeTotal:record["feeTotal"],
+    opinions:record["opinions"],
+  })
   setIsModalVisible(true)
 }
   const columns: any = [
@@ -43,34 +51,12 @@ const handleDetail = (record:any)=>{
       }
     },
   ];
-  const handleSearch = (e:any)=>{
-    const text = e.target.value
-    setSearchContent(text)
-  }
-  const searchHandle = () => {
-    const repairMan = searchContent
-    Http.reqGetCustomer("/getMaintenDetail",{repairMan,offset:0,size:10}).then((response:any)=>{
-      const  result  = response?.data?.result ||[]
-      setData(result)
-     })
-  };
   React.useEffect(()=>{
-    Http.reqGetCustomer("/getMaintenDetail",{repairMan:"",offset:0,size:10}).then((response:any)=>{
+    Http.reqServiceFeeInfo("/getServiceFee",{offset:0,size:10}).then((response:any)=>{
      const  result  = response?.data?.result ||[]
      setData(result)
     })
    },[])
-  //  const refreshTable = (ifFirst?:boolean)=>{
-
-  //   Http.reqGetCustomer("/getMaintenDetail",{repairMan:"",offset:0,size:10}).then((response:any)=>{
-  //     const  result  = response?.data?.result ||[]
-  //     setData(result)
-  
-  //    }) 
-  //   if(ifFirst){
-    
-  //   }
-  //   }
   const onCreate = (values:any)=>{
     console.log('values',values);
     setIsModalVisible(false)  
@@ -84,16 +70,6 @@ const handleDetail = (record:any)=>{
   }
   return (
     <>
-      <div>
-        <Input placeholder="输入员工姓名" allowClear style={{ width: "400px" }} onChange={ handleSearch }/>
-        <Button
-          onClick={searchHandle}
-          style={{ marginLeft: "40px" }}
-          type="primary"
-        >
-          搜索
-        </Button>
-      </div>
       <div style={{ margin: "40px 0  10px 0 " }}></div>
       <Table columns={columns} dataSource={data} rowKey="id" />
       <Fee onCreate={onCreate} isModalVisible={isModalVisible} handleCancel={handleCancel} getForm={getForm}/>

@@ -36,7 +36,7 @@ const MaintenDetail: React.FC = () => {
     }
   const  approveConfirm = async(_record:any)=> {
     await Http.reqEditStatusMaintenAppoint("/editStatusMaintenAppoint",{id:_record["repairNum"],status:"服务结算"})
-    await Http.reqEditStatusMaintenDetail("/editStatusMaintenDetail",{id:_record["id"],status:"服务结算"})
+    await Http.reqEditStatusMaintenDetail("/editStatusMaintenDetail",{repairNum:_record["repairNum"],status:"服务结算"})
     await refreshTable()
     message.success('审核成功');
   }
@@ -57,7 +57,8 @@ const MaintenDetail: React.FC = () => {
   const handleServiceAudit = (record:any)=>{
     setIsAuditModalVisible(true)
     auditform&&auditform?.setFieldsValue({
-      repairNum:record["repairNum"]
+      repairNum:record["repairNum"],
+      interviewee:record["name"]
     })
   }
   const columns: any = [
@@ -129,12 +130,22 @@ const MaintenDetail: React.FC = () => {
      setData(result)
     })
    },[])
-  const onCreate = (values:any)=>{
-    console.log('values',values);
+  const onCreate = async(values:any)=>{
+    await Http.reqAddServiceFee("/insertServiceFee",values)  
+    await Http.reqEditStatusMaintenAppoint("/editStatusMaintenAppoint",{id:values["repairNum"],status:"服务稽查"})
+    await Http.reqEditStatusMaintenDetail("/editStatusMaintenDetail",{repairNum:values["repairNum"],status:"服务稽查"})
+    await refreshTable()
     setIsModalVisible(false)  
   }
-  const onAuditCreate = (values:any)=>{
-    console.log('values',values);
+  const onAuditCreate = async(values:any)=>{
+    let result:any = {}
+    Object.keys(values).forEach(item=>{
+      result[item] = values[item].toString()
+    })
+    await Http.reqAddServiceAudit("/insertServiceAudit",result)
+    await Http.reqEditStatusMaintenAppoint("/editStatusMaintenAppoint",{id:values["repairNum"],status:"稽查单审核"})
+    await Http.reqEditStatusMaintenDetail("/editStatusMaintenDetail",{repairNum:values["repairNum"],status:"稽查单审核"})
+    await refreshTable()
     setIsAuditModalVisible(false)
   }
   const getForm = (form:any)=>{
