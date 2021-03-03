@@ -12,6 +12,8 @@ import {
   WhatsAppOutlined,
   IdcardOutlined,
   FileTextOutlined,
+  DollarCircleOutlined,
+  FolderViewOutlined
 } from "@ant-design/icons";
 import PubSub from "pubsub-js";
 
@@ -26,8 +28,10 @@ let routers = [
   {"path":"staffInfo","component":Containers.StaffInfo,"title":"员工信息",icon:<UsergroupAddOutlined/>},
   {"path":"carMaintenAppoint","component":Containers.CarMaintenAppoint,"title":"服务委托",icon:<CalendarOutlined/>},
   {"path":"serviceInfo","component":Containers.ServiceInfo,"title":"服务信息",icon:<FileTextOutlined/>},
-  {"path":"maintenDetail","component":Containers.MaintenDetail,"title":"服务费用",icon:<ToolOutlined/>},
+  {"path":"maintenDetail","component":Containers.MaintenDetail,"title":"维修报告",icon:<ToolOutlined/>},
   {"path":"returnInfo","component":Containers.ReturnInfo,"title":"回访信息",icon:<WhatsAppOutlined/>},
+  {"path":"serviceFee","component":Containers.ServiceFee,"title":"服务费用",icon:<DollarCircleOutlined/>},
+  {"path":"serviceAudit","component":Containers.ServiceAudit,"title":"服务稽查  ",icon:<FolderViewOutlined/>},
   {"path":"permissionAssign","component":Containers.PermissionAssign,"title":"权限分配",icon:<IdcardOutlined/>}
 ]
 let routersDisplay:any[]

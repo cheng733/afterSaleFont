@@ -6,7 +6,6 @@ import Http from '../../http'
 import AddOrEditCustomer from "./AddOrEditCustomer";
 
 
-
 const CustomerInfo: React.FC = () => {
   const [data,setData] = React.useState([])
   const [searchContent,setSearchContent] = React.useState("")
@@ -27,10 +26,8 @@ const CustomerInfo: React.FC = () => {
     setForm(form)
   }
   const handleEdit =(record:any)=>{  
-    console.log('record',record);
     setRowData(record)
     setModalName("编辑客户信息")
-    console.log('getForm',form);
     form&&form?.setFieldsValue({
       name:record["name"],
       registerDate:moment(record["registerDate"]),
@@ -58,26 +55,20 @@ const CustomerInfo: React.FC = () => {
    })
   },[])
   const refreshTable = (ifFirst?:boolean)=>{
-
     Http.reqGetCustomer("/getCustomerInfo",{name:"",offset:0,size:10}).then((response:any)=>{
       const  result  = response?.data?.result ||[]
       setData(result)
-  
      }) 
     if(ifFirst){
     
     }
     }
     const onCreate = async(values: any) => {
-      console.log('Received values of form: ', values);
       let { name,registerDate,status,phone } = values
       registerDate = registerDate.format('YYYY-MM-DD')
-      console.log(registerDate,name,status,phone);
-      console.log('rowData',rowData);
       if(rowData["id"]){
         let id = rowData["id"]
-        const response = await Http.reqDeitCustomer("/updateCustomerInfo",{registerDate,name,status,phone,id})
-        console.log('response',response);
+       await Http.reqDeitCustomer("/updateCustomerInfo",{registerDate,name,status,phone,id})
         
       }else{
         await Http.reqAddCustomer("/insertCustomerInfo",{registerDate,name,status,phone})
@@ -92,8 +83,7 @@ const CustomerInfo: React.FC = () => {
       await refreshTable()
     }
     
-    const HandleDelcancel = (e:any)=> {
-      console.log(e);
+    const HandleDelcancel = (_e:any)=> {
     }
     
     const columns: any = [

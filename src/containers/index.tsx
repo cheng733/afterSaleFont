@@ -10,6 +10,8 @@ import StaffInfo from "./StaffInfo";
 import Register from "./Register";
 import ServiceInfo from "./ServiceInfo";
 import PermissionAssign from "./PermissionAssign";
+import ServiceAudit from './ServiceAudit'
+import ServiceFee from './ServiceFee'
 
 const Containers = {
   Login, // 登录模块
@@ -23,6 +25,8 @@ const Containers = {
   StaffInfo,
   Register,
   ServiceInfo,
-  PermissionAssign
+  PermissionAssign,
+  ServiceAudit,
+  ServiceFee
 };
 export default Containers;

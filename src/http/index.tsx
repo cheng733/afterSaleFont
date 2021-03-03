@@ -40,6 +40,14 @@ const reqEditProblemDescMaintenDetail = (url:string,params:any)=>ajax({url,param
 const reqAuthorityInfo = (url:string,params:any)=>ajax({url,params})
 //修改用户信息--权限分配
 const reqEditAuthorityInfo = (url:string,params:any)=>ajax({url,params})
+//新增服务费用
+const reqAddServiceFee = (url:string,params:any)=>ajax({url,params})
+//获取服务费用
+const reqServiceFeeInfo = (url:string,params:any)=>ajax({url,params})
+//新增服务稽查
+const reqAddServiceAudit = (url:string,params:any)=>ajax({url,params})
+//获取服务稽查
+const reqServiceAuditInfo = (url:string,params:any)=>ajax({url,params})
 
 const Http = {
   reqLogin, 
@@ -61,6 +69,10 @@ const Http = {
   reqDelMaintenDetail,
   reqEditProblemDescMaintenDetail,
   reqEditAuthorityInfo,
-  reqAuthorityInfo
+  reqAuthorityInfo,
+  reqAddServiceFee,
+  reqServiceFeeInfo,
+  reqAddServiceAudit,
+  reqServiceAuditInfo,
 };
 export default Http;
