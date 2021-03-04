@@ -48,7 +48,7 @@ const App: React.FC = () => {
   let realToken = localStorage.getItem("token");
   return (
     <HashRouter>
-      {(realToken && realToken !== "undefined") || token ? (
+      {token ||(realToken && realToken !== "undefined")? (
         <Layout>
           <components.LeftBar collapsed={collapsed} />
           <Layout className="site-layout">
