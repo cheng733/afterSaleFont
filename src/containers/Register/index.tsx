@@ -15,7 +15,6 @@ const tailLayout = {
 
 const Register: React.FC = (props: any) => {
   const onFinish = async (values: any) => {
-    console.log("Success:", values);
     const { password, confirmpassword, username } = values;
     if (password !== confirmpassword) {
       message.error("两次的密码不同");
@@ -31,9 +30,7 @@ const Register: React.FC = (props: any) => {
     }
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
+  const onFinishFailed = (_errorInfo: any) => {};
 
   return (
     <div className="register">

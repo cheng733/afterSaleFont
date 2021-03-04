@@ -13,15 +13,14 @@ import components from "./components";
 import containers from "./containers";
 import "./App.scss";
 
-
 const { Header, Content } = Layout;
 
-const handleSelect = async({ key }:any)=>{
-if(key==="3"){
-  localStorage.removeItem("token")
-  await PubSub.publish("token","")
-}
-}
+const handleSelect = async ({ key }: any) => {
+  if (key === "3") {
+    localStorage.removeItem("token");
+    await PubSub.publish("token", "");
+  }
+};
 const menu = (
   <Menu onClick={handleSelect}>
     <Menu.Item key="0">
@@ -41,14 +40,13 @@ const App: React.FC = () => {
   const toggle = () => {
     setCollapsed(!collapsed);
   };
-  PubSub.subscribe("token", (msg: any, data: any) => {
-    console.log("msg", msg,data);
+  PubSub.subscribe("token", (_msg: any, data: any) => {
     setToken(data);
   });
   let realToken = localStorage.getItem("token");
   return (
     <HashRouter>
-      {token ||(realToken && realToken !== "undefined")? (
+      {token || (realToken && realToken !== "undefined") ? (
         <Layout>
           <components.LeftBar collapsed={collapsed} />
           <Layout className="site-layout">
@@ -64,8 +62,8 @@ const App: React.FC = () => {
                 }
               )}
               <div style={{ position: "absolute", right: "40px", top: "1px" }}>
-                <Dropdown overlay={menu} trigger={["click"]}  >
-                  <Badge count={1} >
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <Badge count={1}>
                     <Avatar
                       shape="square"
                       size="large"
@@ -84,7 +82,7 @@ const App: React.FC = () => {
               }}
             >
               <Switch>
-              <Router/>
+                <Router />
               </Switch>
             </Content>
           </Layout>

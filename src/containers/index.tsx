@@ -1,7 +1,5 @@
 import Login from "./Login";
 import Home from "./Home";
-import Accessories from "./Accessories";
-import CarInfo from "./CarInfo";
 import CarMaintenAppoint from "./CarMaintenAppoint";
 import CustomerInfo from "./CustomerInfo";
 import MaintenDetail from "./MaintenDetail";
@@ -10,14 +8,12 @@ import StaffInfo from "./StaffInfo";
 import Register from "./Register";
 import ServiceInfo from "./ServiceInfo";
 import PermissionAssign from "./PermissionAssign";
-import ServiceAudit from './ServiceAudit'
-import ServiceFee from './ServiceFee'
+import ServiceAudit from "./ServiceAudit";
+import ServiceFee from "./ServiceFee";
 
 const Containers = {
   Login, // 登录模块
   Home, // 首页
-  Accessories,
-  CarInfo,
   CarMaintenAppoint,
   CustomerInfo,
   MaintenDetail,
@@ -27,6 +23,6 @@ const Containers = {
   ServiceInfo,
   PermissionAssign,
   ServiceAudit,
-  ServiceFee
+  ServiceFee,
 };
 export default Containers;

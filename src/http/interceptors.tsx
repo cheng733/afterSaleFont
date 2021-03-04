@@ -19,7 +19,7 @@ instance.interceptors.request.use(
 );
 
 instance.interceptors.response.use(
-  async(response) => {
+  async (response) => {
     const result = response?.data;
     if (response?.config?.url === "/login") {
       let { token } = result?.data;
@@ -30,9 +30,9 @@ instance.interceptors.response.use(
     switch (result?.status) {
       case 400:
         message.error("token已过期，请重新登录");
-       await PubSub.publish("token", "");
+        await PubSub.publish("token", "");
         localStorage.removeItem("token");
-        
+
         break;
       case 401:
         message.error("token已过期，请重新登录");

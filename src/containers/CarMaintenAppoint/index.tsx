@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Input, Button, Col, Row,DatePicker, message } from "antd";
+import { Form, Input, Button, Col, Row, DatePicker, message } from "antd";
 import Http from "../../http";
 
 const formItemLayout = {
@@ -36,24 +36,41 @@ const { TextArea } = Input;
 const CarMaintenAppoint: React.FC = () => {
   const [form] = Form.useForm();
 
-  const onFinish = async(values: any) => {
-    let { card,carNum,faultArea,faultDesc,helpTime,name,phone,userRequrie } = values
-    helpTime = helpTime.format('YYYY-MM-DD')
-    let status = "维修委托"
-    const response:any = await Http.reqCarMaintenAppoint("/insertCarMaintenAppointInfo",{card,carNum,faultArea,faultDesc,helpTime,name,phone,userRequrie,status})
-    if(response?.status===200){
-      message.success("委托成功")
+  const onFinish = async (values: any) => {
+    let {
+      card,
+      carNum,
+      faultArea,
+      faultDesc,
+      helpTime,
+      name,
+      phone,
+      userRequrie,
+    } = values;
+    helpTime = helpTime.format("YYYY-MM-DD");
+    let status = "维修委托";
+    const response: any = await Http.reqCarMaintenAppoint(
+      "/insertCarMaintenAppointInfo",
+      {
+        card,
+        carNum,
+        faultArea,
+        faultDesc,
+        helpTime,
+        name,
+        phone,
+        userRequrie,
+        status,
+      }
+    );
+    if (response?.status === 200) {
+      message.success("委托成功");
     }
-    form.resetFields() 
+    form.resetFields();
   };
-  const  TimeChange = (value: any, dateString: any)=> {
-    console.log('Selected Time: ', value);
-    console.log('Formatted Selected Time: ', dateString);
-  }
-  
-  const  TimeConfirm = (value: any)=> {
-    console.log('onOk: ', value);
-  }
+  const TimeChange = (_value: any, _dateString: any) => {};
+
+  const TimeConfirm = (_value: any) => {};
   return (
     <Form
       {...formItemLayout}
@@ -150,7 +167,7 @@ const CarMaintenAppoint: React.FC = () => {
               },
             ]}
           >
-           <Input/>
+            <Input />
           </Form.Item>
         </Col>
       </Row>
@@ -181,7 +198,7 @@ const CarMaintenAppoint: React.FC = () => {
           },
         ]}
       >
-                <TextArea rows={4} />
+        <TextArea rows={4} />
       </Form.Item>
       <Form.Item {...tailFormItemLayout}>
         <Button type="primary" htmlType="submit">
