@@ -37,31 +37,12 @@ const CarMaintenAppoint: React.FC = () => {
   const [form] = Form.useForm();
 
   const onFinish = async (values: any) => {
-    let {
-      card,
-      carNum,
-      faultArea,
-      faultDesc,
-      helpTime,
-      name,
-      phone,
-      userRequrie,
-    } = values;
-    helpTime = helpTime.format("YYYY-MM-DD");
-    let status = "维修委托";
+    let { helpTime } = values;
+    values["helpTime"] = helpTime.format("YYYY-MM-DD");
+    values["status"] = "维修委托";
     const response: any = await Http.reqCarMaintenAppoint(
       "/insertCarMaintenAppointInfo",
-      {
-        card,
-        carNum,
-        faultArea,
-        faultDesc,
-        helpTime,
-        name,
-        phone,
-        userRequrie,
-        status,
-      }
+      values
     );
     if (response?.status === 200) {
       message.success("委托成功");
@@ -187,7 +168,7 @@ const CarMaintenAppoint: React.FC = () => {
       </Form.Item>
 
       <Form.Item
-        name="userRequrie"
+        name="userRequire"
         label="用户要求"
         labelCol={{ span: 2, offset: 0 }}
         wrapperCol={{ span: 8, offset: 0 }}
