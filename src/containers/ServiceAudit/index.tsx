@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Button } from "antd";
+import { Table, Button, Popconfirm, message } from "antd";
 
 import Http from '../../http'
 import ServiceAuditDatail from './ServiceAudit'
@@ -19,6 +19,18 @@ const handleDetail = (record:any)=>{
     returnConclusion:record["returnConclusion"],
   })
   setIsModalVisible(true)
+}
+const handleAudit = async(record:any)=>{
+  await Http.reqEditStatusMaintenAppoint("/editStatusMaintenAppoint",{id:record["repairNum"],status:"服务完结"})
+  await Http.reqEditStatusMaintenDetail("/editStatusMaintenDetail",{repairNum:record["repairNum"],status:"服务完结"})
+  await Http.reqEditStatusServiceAudit("/editStatusServiceAudit",{id:record["id"],status:"服务完结"})
+  await Http.reqServiceAuditInfo("/getServiceAudit",{offset:0,size:10}).then((response:any)=>{
+    const  result  = response?.data?.result ||[]
+    setData(result)
+   })
+}
+const cancel = ()=>{
+  message.warn("请转告有关部门重新核实情况")
 }
   const columns: any = [
     {
@@ -46,7 +58,14 @@ const handleDetail = (record:any)=>{
     {
       title: "操作",
       render:(_text: any,_record: any,_index: any)=>{
-        return <Button type="primary" onClick={()=>handleDetail(_record)}>详情</Button>
+        return (<>
+        <Button type="primary" onClick={()=>handleDetail(_record)}>详情</Button>&nbsp;&nbsp;{_record["status"]==="稽查单审核"?(<Popconfirm
+        title="维修报告单是否情况属实"
+        onConfirm={()=>handleAudit(_record)}
+        onCancel={cancel}
+        okText="是"
+        cancelText="否"
+      ><Button type="primary">审核</Button></Popconfirm>):<></>}</>)
       }
     },
   ];
@@ -56,8 +75,7 @@ const handleDetail = (record:any)=>{
      setData(result)
     })
    },[])
-  const onCreate = (values:any)=>{
-    console.log('values',values);
+  const onCreate = (_values:any)=>{
     setIsModalVisible(false)  
   }
   const handleCancel = () => {

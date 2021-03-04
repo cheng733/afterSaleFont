@@ -48,6 +48,8 @@ const reqServiceFeeInfo = (url:string,params:any)=>ajax({url,params})
 const reqAddServiceAudit = (url:string,params:any)=>ajax({url,params})
 //获取服务稽查
 const reqServiceAuditInfo = (url:string,params:any)=>ajax({url,params})
+//修改服务稽查状态
+const reqEditStatusServiceAudit = (url:string,params:any)=>ajax({url,params})
 
 const Http = {
   reqLogin, 
@@ -74,5 +76,6 @@ const Http = {
   reqServiceFeeInfo,
   reqAddServiceAudit,
   reqServiceAuditInfo,
+  reqEditStatusServiceAudit
 };
 export default Http;

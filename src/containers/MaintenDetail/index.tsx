@@ -142,6 +142,7 @@ const MaintenDetail: React.FC = () => {
     Object.keys(values).forEach(item=>{
       result[item] = values[item].toString()
     })
+    result["status"] = "稽查单审核"
     await Http.reqAddServiceAudit("/insertServiceAudit",result)
     await Http.reqEditStatusMaintenAppoint("/editStatusMaintenAppoint",{id:values["repairNum"],status:"稽查单审核"})
     await Http.reqEditStatusMaintenDetail("/editStatusMaintenDetail",{repairNum:values["repairNum"],status:"稽查单审核"})
