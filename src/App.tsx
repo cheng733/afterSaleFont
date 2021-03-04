@@ -45,7 +45,7 @@ const App: React.FC = () => {
     console.log("msg", msg,data);
     setToken(data);
   });
-  var realToken = localStorage.getItem("token");
+  let realToken = localStorage.getItem("token");
   return (
     <HashRouter>
       {(realToken && realToken !== "undefined") || token ? (

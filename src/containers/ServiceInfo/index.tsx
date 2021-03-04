@@ -24,6 +24,9 @@ const ServiceInfo: React.FC = () => {
     })
   }
   const columns: any = [
+    {title:"序号",render:(_text: any,_record: any,index: any)=>{
+      return ++index
+    }},
     {title:"维修编号",dataIndex:"id"},
     {
       title: "车主姓名",
