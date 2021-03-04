@@ -17,16 +17,14 @@ const tailLayout = {
 const Login: React.FC<any> = (props) => {
   const onFinish = async (values: any) => {
     const response: any = (await Http.reqLogin("/login", values)) || {};
-    localStorage.setItem("username",values["username"])
+    localStorage.setItem("username", values["username"]);
     if (response?.status === 200) {
       message.success(response?.data?.info);
       props?.history.replace("/home");
     }
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
+  const onFinishFailed = (_errorInfo: any) => {};
   const handleRegister = () => {
     props?.history.push("/register");
   };
